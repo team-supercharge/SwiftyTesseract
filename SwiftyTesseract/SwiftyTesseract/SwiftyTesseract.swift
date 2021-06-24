@@ -10,7 +10,7 @@ import UIKit
 import Combine
 import libtesseract
 
-typealias TessBaseAPI = OpaquePointer
+public typealias TessBaseAPI = OpaquePointer
 typealias Pix = UnsafeMutablePointer<PIX>?
 
 /// A class that performs optical character recognition with the open-source Tesseract library
@@ -299,6 +299,28 @@ extension SwiftyTesseract {
 }
 
 extension SwiftyTesseract {
+    var pageSegMode: TessPageSegMode {
+      get {
+        perform { tessPointer in
+          TessBaseAPIGetPageSegMode(tessPointer)
+        }
+      }
+      set {
+        perform { tessPointer in
+          TessBaseAPISetPageSegMode(tessPointer, newValue)
+        }
+      }
+    }
+    /// Perform an action using the Tesseract pointer crated during initialization. This operation is thread-safe
+    /// - Parameter action: A function that operates on the tessearct pointer to produce a value.
+    /// - Returns: The value returned from `action`
+    public func perform<A>(action: (TessBaseAPI) -> A) -> A {
+      _ = semaphore.wait(timeout: .distantFuture)
+      defer { semaphore.signal() }
+
+      return action(tesseract)
+    }
+
   /// This method must be called *after* `performOCR(on:)`. Otherwise calling this method will result in failure.
   /// - Parameter level: The level which corresponds to the granularity of the desired recognized block
   /// - Returns: On success, an array of `RecognizedBlock`s in the coordinate space of the _image_.

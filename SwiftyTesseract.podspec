@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name                     = "SwiftyTesseract"
-  s.version                  = ENV["POD_VERSION"]
+  s.version                  = "3.1.3"
   s.summary                  = "A Swift wrapper around Tesseract for use in iOS applications."
 
   s.swift_versions           = "5.2"
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
                                 SwiftyTesseractRTE.
                               DESC
 
-  s.homepage                 = "https://github.com/SwiftyTesseract/SwiftyTesseract"
+  s.homepage                 = "https://github.com/team-supercharge/SwiftyTesseract"
 
   s.license                  = { :type => "MIT", :file => "LICENSE.md" }
 
